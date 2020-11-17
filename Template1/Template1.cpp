@@ -9,121 +9,102 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <math.h>
-#define GL_GLEXT_PROTOTYPES
 
 
-// ----------------------------------------------------------
-// Function Prototypes
-// ----------------------------------------------------------
-void display();
-void specialKeys();
+double y_cord = 0;
+double x_cord = 0;
 
-// ----------------------------------------------------------
-// Global Variables
-// ----------------------------------------------------------
-double rotate_y = 0;
-double rotate_x = 0;
 
-// ----------------------------------------------------------
-// display() Callback function
-// ----------------------------------------------------------
 void MyDisplay() {
 
-    //  Clear screen and Z-buffer
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear screen and Z buffer
 
     // Reset transformations
     glLoadIdentity();
 
-    // Other Transformations
-    // glTranslatef( 0.1, 0.0, 0.0 );      // Not included
-    // glRotatef( 180, 0.0, 1.0, 0.0 );    // Not included
 
-    // Rotate when user changes rotate_x and rotate_y
-    glRotated(rotate_x, 1.0, 0.0, 0.0);
-    glRotated(rotate_y, 0.0, 1.0, 0.0);
+    // Rotate when user changes x_cord and y_cord
+    glRotated(x_cord, 1.0, 0.0, 0.0);
+    glRotated(y_cord, 0.0, 1.0, 0.0);
 
-    // Other Transformations
-    // glScalef( 2.0, 2.0, 0.0 );          // Not included
+   
 
     //Yellow side - FRONT
     glBegin(GL_POLYGON);
     glColor3f(1.0, 0.78, 0.0);     
-    glVertex3f(0.5, -0.5, -0.5);      // P1 is red
-    glVertex3f(0.5, 0.5, -0.5);      
-    glVertex3f(-0.5, 0.5, -0.5);      
-    glVertex3f(-0.5, -0.5, -0.5);      
+    glVertex3f(0.25, -0.25, -0.25);
+    glVertex3f(0.25, 0.25, -0.25);      
+    glVertex3f(-0.25, 0.25, -0.25);      
+    glVertex3f(-0.25, -0.25, -0.25);      
     glEnd();
 
     // White side - BACK
     glBegin(GL_POLYGON);
     glColor3f(1.0, 1.0, 1.0);
-    glVertex3f(0.5, -0.5, 0.5);
-    glVertex3f(0.5, 0.5, 0.5);
-    glVertex3f(-0.5, 0.5, 0.5);
-    glVertex3f(-0.5, -0.5, 0.5);
+    glVertex3f(0.25, -0.25, 0.25);
+    glVertex3f(0.25, 0.25, 0.25);
+    glVertex3f(-0.25, 0.25, 0.25);
+    glVertex3f(-0.25, -0.25, 0.25);
     glEnd();
 
     // Purple side - RIGHT
     glBegin(GL_POLYGON);
     glColor3f(1.0, 0.0, 1.0);
-    glVertex3f(0.5, -0.5, -0.5);
-    glVertex3f(0.5, 0.5, -0.5);
-    glVertex3f(0.5, 0.5, 0.5);
-    glVertex3f(0.5, -0.5, 0.5);
+    glVertex3f(0.25, -0.25, -0.25);
+    glVertex3f(0.25, 0.25, -0.25);
+    glVertex3f(0.25, 0.25, 0.25);
+    glVertex3f(0.25, -0.25, 0.25);
     glEnd();
 
     // Green side - LEFT
     glBegin(GL_POLYGON);
     glColor3f(0.0, 1.0, 0.0);
-    glVertex3f(-0.5, -0.5, 0.5);
-    glVertex3f(-0.5, 0.5, 0.5);
-    glVertex3f(-0.5, 0.5, -0.5);
-    glVertex3f(-0.5, -0.5, -0.5);
+    glVertex3f(-0.25, -0.25, 0.25);
+    glVertex3f(-0.25, 0.25, 0.25);
+    glVertex3f(-0.25, 0.25, -0.25);
+    glVertex3f(-0.25, -0.25, -0.25);
     glEnd();
 
     // Blue side - TOP
     glBegin(GL_POLYGON);
     glColor3f(0.0, 0.0, 1.0);
-    glVertex3f(0.5, 0.5, 0.5);
-    glVertex3f(0.5, 0.5, -0.5);
-    glVertex3f(-0.5, 0.5, -0.5);
-    glVertex3f(-0.5, 0.5, 0.5);
+    glVertex3f(0.25, 0.25, 0.25);
+    glVertex3f(0.25, 0.25, -0.25);
+    glVertex3f(-0.25, 0.25, -0.25);
+    glVertex3f(-0.25, 0.25, 0.25);
     glEnd();
 
     // Red side - BOTTOM
     glBegin(GL_POLYGON);
     glColor3f(1.0, 0.0, 0.0);
-    glVertex3f(0.5, -0.5, -0.5);
-    glVertex3f(0.5, -0.5, 0.5);
-    glVertex3f(-0.5, -0.5, 0.5);
-    glVertex3f(-0.5, -0.5, -0.5);
+    glVertex3f(0.25, -0.25, -0.25);
+    glVertex3f(0.25, -0.25, 0.25);
+    glVertex3f(-0.25, -0.25, 0.25);
+    glVertex3f(-0.25, -0.25, -0.25);
     glEnd();
 
     glFlush();
-    //glutSwapBuffers(); //po chuja
+
 }
 
-// ----------------------------------------------------------
-// specialKeys() Callback Function
-// ----------------------------------------------------------
+
 void specialKeys(int key, int x, int y) {
 
-    //  Right arrow - increase rotation by 5 degree
+    
     if (key == GLUT_KEY_RIGHT)
-        rotate_y += 5;
+        y_cord += 4;
 
-    //  Left arrow - decrease rotation by 5 degree
     else if (key == GLUT_KEY_LEFT)
-        rotate_y -= 5;
+        y_cord -= 4;
 
     else if (key == GLUT_KEY_UP)
-        rotate_x += 5;
+        x_cord += 4;
 
     else if (key == GLUT_KEY_DOWN)
-        rotate_x -= 5;
+        x_cord -= 4;
 
-    //  Request display update
+
     glutPostRedisplay();
 
 }
@@ -137,24 +118,25 @@ int main(int argc, char* argv[]) {
     //  Initialize GLUT and process user parameters
     glutInit(&argc, argv);
 
-    //  Request double buffered true color window with Z-buff	
+    glClearColor(0.0, 0.0, 0.0, 0.0);
+
+    
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB );
     glutInitWindowSize(600, 600);
     glutInitWindowPosition(100, 100);
-    // Create window
-    glutCreateWindow("Awesome Cube");
+
+    
+    glutCreateWindow("my cube");
 
     //  Enable Z-buffer depth test
     glEnable(GL_DEPTH_TEST);
-    //MyInit();
-    // Callback functions
+
     glutDisplayFunc(MyDisplay);
     glutSpecialFunc(specialKeys);
 
-    //  Pass control to GLUT for events
     glutMainLoop();
 
-    //  Return to OS
+   
     return 0;
 
 }
